@@ -1,0 +1,165 @@
+import { useState, useEffect } from "react";
+import "./carousel.css"; // External CSS file for styling
+// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+// import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+const Carousel = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  // Array of images and their corresponding text
+  const images = [
+    {
+      src: "https://i1.wp.com/i.pinimg.com/originals/79/15/40/7915402bea818aec1584fce63115a979.jpg?ssl=1",
+      text: "Discover the best time to book your next stay.",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=1555&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      text: "TRAVEL FOR THOSE WHO CARE.",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      text: "Discover the real value of travel.",
+    },
+    // {
+    //   src: "https://images.unsplash.com/photo-1548092372-0d1bd40894a3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    //   text: "Intallysh Wisdom prioritizes security, crafting comprehensive solutions with cutting-edge tech. Our commitment extends globally, ensuring robust network protection across diverse borders and digital landscapes.",
+    // },
+  ];
+
+  // Auto play the carousel every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  const nextSlide = () => {
+    setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentImage((prevImage) =>
+      prevImage === 0 ? images.length - 1 : prevImage - 1
+    );
+  };
+  return (
+    <div className="carousel-container">
+      {images.map((image, index) => (
+        <div
+          key={index}
+          className={index === currentImage ? "slide active" : "slide"}
+        >
+          <img src={image.src} alt={`Image ${index + 1}`} />
+          <div className="text-overlay">
+            <p>{image.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Carousel;
+
+CSS
+=====
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 400px; /* Set the height of the carousel */
+    overflow: hidden;
+  }
+  
+  .slide {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .slide.active {
+    display: block;
+  }
+  .text-overlay {
+    position: absolute;
+    width: 85rem;
+    height: 100%;
+    top: 49%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .text-overlay p {
+    font-family: "Arial, sans-serif";
+    margin-top:250px;
+    font-size: 55px;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 400;
+    /* Additional text styling */
+    text-transform: capitalize;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  /* Add these styles for the control buttons */
+  .control-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .control-btn.prev {
+    left: 20px;
+  }
+  
+  .control-btn.next {
+    right: 20px;
+  }
+  
+  /* Media queries for mobile responsiveness */
+  @media (max-width: 768px) {
+    .carousel-container {
+      height: 457px;  /*Adjust height for smaller screens*/ 
+      position: relative;
+    }
+  
+    .text-overlay {
+      position: absolute;
+      top: 160%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 27rem;
+      /* / max-width: 90%;  */
+      height:970px;
+      padding: 250px;
+      background-color: rgba(0, 0, 0, 0.7);
+      text-align: center;
+      color: white;
+    }
+  
+    .text-overlay p {
+      margin-top: 7px;
+      font-size: 24px;
+      max-width: 100%;
+      overflow-wrap: normal;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  }
